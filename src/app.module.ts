@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { ResourcesModule } from './resources/resources.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
+import { IsResourcesModule } from './is-resources/is-resources.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { UserModule } from './user/user.module';
     AuthModule,
     ResourcesModule,
     UserModule,
+    IsResourcesModule,
   ],
   controllers: [AppController],
 })
