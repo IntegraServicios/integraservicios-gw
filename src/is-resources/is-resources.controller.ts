@@ -6,19 +6,22 @@ export class IsResourcesController {
   constructor(private readonly isResourcesService: IsResourcesService) {}
   @Put()
   createResource(@Body() data) {
-    this.isResourcesService.createResource(data.name, data.resourceTypeId);
+    return this.isResourcesService.createResource(
+      data.name,
+      data.resourceTypeId,
+    );
   }
   @Get()
   getAllResources() {
-    this.isResourcesService.getAllResources();
+    return this.isResourcesService.getAllResources();
   }
 
   @Get('types/:unitId')
   getResourceTypes(@Param('unitId') unitId: number) {
-    this.isResourcesService.getResourceTypes(unitId);
+    return this.isResourcesService.getResourceTypes(unitId);
   }
   @Get('unit')
   getUnits() {
-    this.isResourcesService.getUnits();
+    return this.isResourcesService.getUnits();
   }
 }

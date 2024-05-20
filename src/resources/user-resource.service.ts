@@ -1,11 +1,7 @@
 import { HttpService } from '@nestjs/axios';
-import {
-  BadRequestException,
-  Injectable,
-  ServiceUnavailableException,
-} from '@nestjs/common';
-import { AxiosError } from 'axios';
-import { catchError, firstValueFrom } from 'rxjs';
+import { Injectable } from '@nestjs/common';
+import { firstValueFrom } from 'rxjs';
+import { customCatchError } from './util/request.util';
 
 @Injectable()
 export class UserResource {
@@ -14,22 +10,13 @@ export class UserResource {
     this.userMsUrl = process.env.USER_MS_URL;
   }
   async validateUser(username: string, password: string) {
-    const { data } = await firstValueFrom(
+    const { data }: any = await firstValueFrom(
       this.httpService
         .post(`${this.userMsUrl}/user/validate`, {
           username,
           password,
         })
-        .pipe(
-          catchError((error: AxiosError) => {
-            if (error.code === 'ECONNREFUSED') {
-              throw new ServiceUnavailableException({
-                service: 'User Service',
-              });
-            }
-            throw new BadRequestException(error.response.data);
-          }),
-        ),
+        .pipe(customCatchError()),
     );
     return data;
   }
@@ -40,7 +27,7 @@ export class UserResource {
     password: string,
     role: string,
   ) {
-    const { data } = await firstValueFrom(
+    const { data }: any = await firstValueFrom(
       this.httpService
         .put(`${this.userMsUrl}/user`, {
           name,
@@ -49,16 +36,7 @@ export class UserResource {
           password,
           role,
         })
-        .pipe(
-          catchError((error: AxiosError) => {
-            if (error.code === 'ECONNREFUSED') {
-              throw new ServiceUnavailableException({
-                service: 'User Service',
-              });
-            }
-            throw new BadRequestException(error?.response?.data);
-          }),
-        ),
+        .pipe(customCatchError()),
     );
     return data;
   }

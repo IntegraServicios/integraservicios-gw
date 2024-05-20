@@ -1,11 +1,7 @@
 import { HttpService } from '@nestjs/axios';
-import {
-  BadRequestException,
-  Injectable,
-  ServiceUnavailableException,
-} from '@nestjs/common';
-import { AxiosError } from 'axios';
-import { catchError, firstValueFrom } from 'rxjs';
+import { Injectable } from '@nestjs/common';
+import { firstValueFrom } from 'rxjs';
+import { customCatchError } from './util/request.util';
 
 @Injectable()
 export class ResourcesResource {
@@ -14,72 +10,40 @@ export class ResourcesResource {
     this.resouresMsUrl = process.env.RESOURCES_MS_URL;
   }
   async createResource(name: string, resourceTypeId: number) {
-    const { data } = await firstValueFrom(
+    const { data }: any = await firstValueFrom(
       this.httpService
         .put(`${this.resouresMsUrl}/resources`, {
           name,
           resourceTypeId,
         })
-        .pipe(
-          catchError((error: AxiosError) => {
-            if (error.code === 'ECONNREFUSED') {
-              throw new ServiceUnavailableException({
-                service: 'Resources Service',
-              });
-            }
-            throw new BadRequestException(error.response.data);
-          }),
-        ),
+        .pipe(customCatchError()),
     );
     return data;
   }
   async getResourceTypes(unitId: number) {
-    const { data } = await firstValueFrom(
+    const { data }: any = await firstValueFrom(
       this.httpService
         .get(`${this.resouresMsUrl}/resources/types/${unitId}`)
-        .pipe(
-          catchError((error: AxiosError) => {
-            if (error.code === 'ECONNREFUSED') {
-              throw new ServiceUnavailableException({
-                service: 'Resources Service',
-              });
-            }
-            throw new BadRequestException(error.response.data);
-          }),
-        ),
+        .pipe(customCatchError()),
     );
     return data;
   }
 
   async getUnits() {
-    const { data } = await firstValueFrom(
-      this.httpService.get(`${this.resouresMsUrl}/resources/units`).pipe(
-        catchError((error: AxiosError) => {
-          if (error.code === 'ECONNREFUSED') {
-            throw new ServiceUnavailableException({
-              service: 'Resources Service',
-            });
-          }
-          throw new BadRequestException(error.response.data);
-        }),
-      ),
+    const { data }: any = await firstValueFrom(
+      this.httpService
+        .get(`${this.resouresMsUrl}/resources/unit`)
+        .pipe(customCatchError()),
     );
     return data;
   }
 
   async getAllResources() {
-    const { data } = await firstValueFrom(
-      this.httpService.get(`${this.resouresMsUrl}/resources`).pipe(
-        catchError((error: AxiosError) => {
-          if (error.code === 'ECONNREFUSED') {
-            throw new ServiceUnavailableException({
-              service: 'Resources Service',
-            });
-          }
-          throw new BadRequestException(error.response.data);
-        }),
-      ),
+    const res: any = await firstValueFrom(
+      this.httpService
+        .get(`${this.resouresMsUrl}/resources`)
+        .pipe(customCatchError()),
     );
-    return data;
+    return res.data;
   }
 }
