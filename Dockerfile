@@ -1,6 +1,5 @@
 FROM node:20-bullseye as builder
 WORKDIR /usr/src/integraservicios-gw
-RUN npm i
 
 COPY --chown=node:node package.json ./
 COPY --chown=node:node package-lock.json ./
