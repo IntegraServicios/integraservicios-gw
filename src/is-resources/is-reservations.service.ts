@@ -4,8 +4,12 @@ import { ResourcesResource } from 'src/resources/resources.service';
 @Injectable()
 export class IsReservationsService {
   constructor(private readonly resourcesResource: ResourcesResource) {}
-  getUserReservations(userId: number) {
-    return this.resourcesResource.getUserReservations(userId);
+  getUserReservations(userId: number, role: string) {
+    if (role === 'ADMIN') {
+      return this.resourcesResource.getAllReservations();
+    } else {
+      return this.resourcesResource.getUserReservations(userId);
+    }
   }
 
   reservateResource(data) {

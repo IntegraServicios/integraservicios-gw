@@ -7,7 +7,10 @@ export class ReservationsController {
   constructor(private readonly reservationsService: IsReservationsService) {}
   @Get('user')
   getUserReservations(@Req() req: ExpressRequestExtended) {
-    return this.reservationsService.getUserReservations(req.user.id);
+    return this.reservationsService.getUserReservations(
+      req.user.id,
+      req.user.role,
+    );
   }
 
   @Post()

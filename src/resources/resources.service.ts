@@ -55,6 +55,14 @@ export class ResourcesResource {
     );
     return res.data;
   }
+  async getAllReservations() {
+    const res: any = await firstValueFrom(
+      this.httpService
+        .get(`${this.resouresMsUrl}/reservations`)
+        .pipe(customCatchError()),
+    );
+    return res.data;
+  }
 
   async reservateResource(data) {
     const res: any = await firstValueFrom(
