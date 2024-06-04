@@ -40,4 +40,13 @@ export class UserResource {
     );
     return data;
   }
+
+  async getUserById(userId: number) {
+    const { data }: any = await firstValueFrom(
+      this.httpService
+        .get(`${this.userMsUrl}/user/${userId}`)
+        .pipe(customCatchError()),
+    );
+    return data;
+  }
 }
