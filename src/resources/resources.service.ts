@@ -73,4 +73,15 @@ export class ResourcesResource {
     );
     return res.data;
   }
+
+  async updateReservationStatus(id, status) {
+    const res: any = await firstValueFrom(
+      this.httpService
+        .put(`${this.resouresMsUrl}/reservations/status/${id}`, {
+          status,
+        })
+        .pipe(customCatchError()),
+    );
+    return res.data;
+  }
 }

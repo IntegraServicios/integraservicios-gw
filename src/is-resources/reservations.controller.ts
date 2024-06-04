@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Req } from '@nestjs/common';
 import { IsReservationsService } from './is-reservations.service';
 import { ExpressRequestExtended } from 'src/utils/express-extended';
 
@@ -19,5 +19,13 @@ export class ReservationsController {
   @Get('resource/:id')
   getResourcePendingReservations(@Param('id') id: number) {
     return this.reservationsService.getResourcePendingReservations(id);
+  }
+
+  @Put('status/:id')
+  updateReservationStatus(
+    @Param('id') id: number,
+    @Body('status') status: string,
+  ) {
+    return this.reservationsService.updateReservationStatus(id, status);
   }
 }

@@ -15,4 +15,8 @@ export class IsReservationsService {
   getResourcePendingReservations(id) {
     return this.resourcesResource.getResourcePendingReservations(id);
   }
+
+  updateReservationStatus(id, status) {
+    return this.resourcesResource.updateReservationStatus(id, status);
+  }
 }
