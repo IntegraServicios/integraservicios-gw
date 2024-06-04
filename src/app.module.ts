@@ -5,6 +5,8 @@ import { ResourcesModule } from './resources/resources.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { IsResourcesModule } from './is-resources/is-resources.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './auth/guards/auth.guard';
 
 @Module({
   imports: [
@@ -15,5 +17,6 @@ import { IsResourcesModule } from './is-resources/is-resources.module';
     IsResourcesModule,
   ],
   controllers: [AppController],
+  providers: [{ provide: APP_GUARD, useClass: AuthGuard }],
 })
 export class AppModule {}

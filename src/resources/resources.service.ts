@@ -46,4 +46,31 @@ export class ResourcesResource {
     );
     return res.data;
   }
+
+  async getUserReservations(userId: number) {
+    const res: any = await firstValueFrom(
+      this.httpService
+        .get(`${this.resouresMsUrl}/reservations/user/${userId}`)
+        .pipe(customCatchError()),
+    );
+    return res.data;
+  }
+
+  async reservateResource(data) {
+    const res: any = await firstValueFrom(
+      this.httpService
+        .post(`${this.resouresMsUrl}/reservations`, data)
+        .pipe(customCatchError()),
+    );
+    return res.data;
+  }
+
+  async getResourcePendingReservations(id) {
+    const res: any = await firstValueFrom(
+      this.httpService
+        .get(`${this.resouresMsUrl}/reservations/resource/${id}`)
+        .pipe(customCatchError()),
+    );
+    return res.data;
+  }
 }

@@ -6,6 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
+import { AuthGuard } from './guards/auth.guard';
 
 @Module({
   imports: [
@@ -13,10 +14,12 @@ import { ConfigModule } from '@nestjs/config';
     ResourcesModule,
     PassportModule,
     JwtModule.register({
+      global: true,
       secret: process.env.JWT_SECRET,
     }),
   ],
-  providers: [AuthService, LocalStrategy],
+  providers: [AuthService, LocalStrategy, AuthGuard],
   controllers: [AuthController],
+  exports: [AuthGuard],
 })
 export class AuthModule {}
